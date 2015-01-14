@@ -15,11 +15,21 @@ downstream = serial.Serial(downstreamName, **serialConfig)
 def repeat(fromLabel, fromPort, toLabel, toPort):
   data = fromPort.readall()
   length = len(data)
-  if ( length > 0 ):
-    print("repeating "+str(length)+" bytes from "+fromLabel+" into "+toLabel)
+  if ( length <= 0 ): return False
+  print("repeating "+str(length)+" bytes from "+fromLabel+" into "+toLabel)
+  if ( length < 50 ):
+    # it's short, it's probably just control codes
+    # let's print them as hex for later analysis
+    # q1: is it always the same?
     hexstr = ':'.join(x.encode('hex') for x in data)
     print(hexstr)
-    toPort.write(data);
+
+  if ( length >= 50 ):
+    # this is probably the payload! let's fuck with it
+    print("inserting our own shit!")
+    toPort.write("Hello world")
+
+  toPort.write(data);
 
 
 while upstream.isOpen() and downstream.isOpen():
