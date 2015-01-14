@@ -23,15 +23,15 @@ def repeat(fromLabel, fromPort, toLabel, toPort):
     # q1: is it always the same?
     hexstr = ':'.join(x.encode('hex') for x in data)
     print(hexstr)
-
-  if ( length >= 50 ):
+    toPort.write(data)
+  else:
     # this is probably the payload! let's fuck with it
     print("inserting our own shit!")
-    toPort.write("Hello world")
+    toPort.write("There are no rules here -- we're trying to accomplish something.\n\t-- Thomas Edison")
+    toPort.write(data)
 
-  toPort.write(data);
 
-
+print("Go for it")
 while upstream.isOpen() and downstream.isOpen():
   repeat('pc', upstream, 'printer', downstream)
   repeat('printer', downstream, 'pc', upstream)
