@@ -18,7 +18,6 @@ def printByteCount(c, direction):
 
 
 while upstream.isOpen() and downstream.isOpen():
-    upstream.setDTR(True)
     ds = downstream.write(upstream.read())
     us = upstream.write(downstream.read())
     printByteCount(ds, 'downstream')
